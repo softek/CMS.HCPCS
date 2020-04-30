@@ -25,7 +25,8 @@
 (defn- rekey
   [row]
   (-> (set/rename-keys row rekey-2020)
-      (update :Changed? boolean)))
+      (update :Changed? boolean)
+      (update :HCPCSCode str)))
 
 (defn- escape-csv
   [x]
@@ -95,12 +96,13 @@
     (doseq [record records]
       (println
         (str
-          "INSERT @ScheduleB VALUES "
+          "INSERT @ScheduleB VALUES ("
           (sql-literal (.-HCPCSCode record))           ","
           (sql-literal (.-ShortDescriptor record))     ","
           (sql-literal (.-StatusIndicator record))     ","
           (sql-literal (.-PaymentRate record))         ","
-          (sql-literal (.-Changed? record))            ";")))))
+          (sql-literal (.-Changed? record))            " "
+          ");")))))
 
 (comment
   (def ex2020-header  ["HCPCS Code"
@@ -125,19 +127,29 @@
    "CSV"        print-CSV
    "SQL"        print-SQL})
 
+(defn load-records
+  [xlsx-path]
+  (->> xlsx-path
+       ss/load-workbook
+       ss/sheet-seq
+       first
+       sheet->ScheduleBEntry-seq))
+
 (defn -main
-  [format xlsx-path]
+  [format & xlsx-paths]
+ (if (empty? xlsx-paths)
+  (println "Arguments: <format> my1.xlsx [... myN.xlsx]\r\nwhere format is one of CSV, JSON, or SQL.")
   (let [format (string/upper-case (or (and (string/blank? format) "JSON") format))
         printer (or (get printers format)
                     (do (println "Unsupported format:" format) prn))
-        xlsx-path xlsx-path
-        rows (->> xlsx-path
-                  ss/load-workbook
-                  ss/sheet-seq
-                  first
-                  sheet->ScheduleBEntry-seq)]
-    (printer rows)
+        records (->> (map load-records xlsx-paths)
+                     (map (fn [records] (zipmap (map #(.-HCPCSCode %) records) records)))
+                     (apply merge {})
+                     vals
+                     (sort-by #(.-HCPCSCode %)))]
+    (printer records)
+    (println)
 
     ; Write count to stderr
     (binding [*out* *err*]
-      (println ";" (count rows) "HCPS Codes from" (str \" xlsx-path \")))))
+      (println "; loadedf/merged" (count records) "HCPS Codes from" (pr-str xlsx-paths))))))
