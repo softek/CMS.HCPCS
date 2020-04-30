@@ -52,9 +52,9 @@
     (when-not (every? (into #{} header) required-headers)
       (binding [*out* *err*]
         (println "Missing some required fields.")
-        (println "Required: " (string/join "," (keys rekey-2020)))
-        (println "Actual:   " header)
-        (println "Missing:  " (remove (into #{} header) (seq required-headers)))))
+        (println "Required: " (pr-str (keys rekey-2020)))
+        (println "Actual:   " (pr-str header))
+        (println "Missing:  " (pr-str (remove (into #{} header) (seq required-headers))))))
     (->> value-rows
          (map (fn [cells]
                  (-> (into {} (map vector header cells))
@@ -152,4 +152,4 @@
 
     ; Write count to stderr
     (binding [*out* *err*]
-      (println "; loadedf/merged" (count records) "HCPS Codes from" (pr-str xlsx-paths))))))
+      (println "; loaded/merged" (count records) "HCPS Codes from" (pr-str xlsx-paths))))))
