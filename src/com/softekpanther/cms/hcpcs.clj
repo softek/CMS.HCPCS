@@ -44,7 +44,6 @@
                                              (ss/cell-seq row))))
                            (drop-while
                               (fn drop-header? [cells]
-                                  ;(println (first cells) :drop? (some? (first cells)))
                                   (or (string/blank? (str (first cells))))))
                            (filter #(>= (count %) 3)))
         required-headers (into #{} (map str (keys rekey-2020)))
