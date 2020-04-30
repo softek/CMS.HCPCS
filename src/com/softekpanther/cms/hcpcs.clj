@@ -22,18 +22,17 @@
    ^Double   PaymentRate
    ^Boolean  Changed?])
 
-(defn rekey
+(defn- rekey
   [row]
   (-> (set/rename-keys row rekey-2020)
       (update :Changed? boolean)))
 
-(defn escape-csv
+(defn- escape-csv
   [x]
   (cond (and (string? x) (re-seq #"|[0-9,'\" ]" x))    (str \" (string/replace x #"\"" "\"\"") \")
         (some? x)                                     (str x)))
-        
 
-(defn sheet->ScheduleBEntry-seq
+(defn- sheet->ScheduleBEntry-seq
   [sheet]
   (let [relevant-rows (->> (ss/row-seq sheet)
                            (map (fn [row] (map
@@ -61,6 +60,40 @@
 
 (def print-JSON json/pprint)
 
+(defn- sql-literal
+  [x]
+  (cond (string? x)     (str \' (string/replace x #"\'" "''") \')
+        (true? x)       "1"
+        (false? x)      "0"
+        (some? x)       (str x)
+        (nil? x)        "NULL"))
+
+(defn print-SQL
+  [records]
+  (let [varchar-lengths
+        {:HCPCSCode (apply max (map (comp count :HCPCSCode) records))
+         :ShortDescriptor (apply max (map (comp count :ShortDescriptor) records))
+         :StatusIndicator (apply max (map (comp count :StatusIndicator) records))}
+        any-nils?
+        {:HCPCSCode (some (comp nil? :HCPCSCode) records)
+         :ShortDescriptor (some (comp nil? :ShortDescriptor) records)
+         :StatusIndicator (some (comp nil? :StatusIndicator) records)}]
+    (println "DECLARE @ScheduleB TABLE  (")
+    (println "  HCPCSCode varchar(" (get varchar-lengths :HCPCSCode) ") "(if (any-nils? :HCPCSCode) "" "NOT")" NULL PRIMARY KEY,")
+    (println "  ShortDescriptor varchar(" (get varchar-lengths :ShortDescriptor) ") "(if (any-nils? :ShortDescriptor) "" "NOT")" NULL,")
+    (println "  StatusIndicator varchar(" (get varchar-lengths :StatusIndicator) ") "(if (any-nils? :StatusIndicator) "" "NOT")" NULL,")
+    (println "  PaymentRate REAL NULL,")
+    (println "  Changed bit NOT NULL);")
+    (doseq [record records]
+      (println
+        (str
+          "INSERT @ScheduleB VALUES "
+          (sql-literal (.-HCPCSCode record))           ","
+          (sql-literal (.-ShortDescriptor record))     ","
+          (sql-literal (.-StatusIndicator record))     ","
+          (sql-literal (.-PaymentRate record))         ","
+          (sql-literal (.-Changed? record))            ";")))))
+
 (comment
   (def ex2020-header  ["HCPCS Code"
                        "Short Descriptor"
@@ -81,7 +114,8 @@
 
 (def printers
   {"JSON"       print-JSON
-   "CSV"        print-CSV})
+   "CSV"        print-CSV
+   "SQL"        print-SQL})
 
 (defn -main
   [format xlsx-path]
@@ -96,6 +130,6 @@
                   sheet->ScheduleBEntry-seq)]
     (printer rows)
 
-    ; Tag use report -> stderr
+    ; Write count to stderr
     (binding [*out* *err*]
-      (println ";" (count rows) "HCPS Codes:"))))
+      (println ";" (count rows) "HCPS Codes from" (str \" xlsx-path \")))))
