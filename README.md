@@ -6,6 +6,11 @@ A Clojure library designed to read the HCPCS codes from the CMS.gov Schedule B E
 
     lein run CSV  "January 2020 Addendum B CORRECTION.02042020.xlsx"
     lein run JSON "January 2020 Addendum B CORRECTION.02042020.xlsx"
+    lein run SQL  "January 2020 Addendum B CORRECTION.02042020.xlsx"
+
+It also works merges updates.  Just put the later ones later in the argument list, like so:
+
+    lein run SQL  january_2019_opps_web_addendum_b.12312018.xlsx "January 2020 Addendum B CORRECTION.02042020.xlsx"
 
 Or, to save the JSON.
 
@@ -20,3 +25,10 @@ Examples:
 
 * [csv](January%202020%20Addendum%20B%20CORRECTION.02042020.xlsx.csv)
 * [json](January%202020%20Addendum%20B%20CORRECTION.02042020.xlsx.json)
+* [sql – T-SQL table variable](January%202020%20Addendum%20B%20CORRECTION.02042020.xlsx.sql)
+
+
+## Source data
+
+Source data may be found by downloading the latest "Schedule B" from https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/HospitalOutpatientPPS/Addendum-A-and-Addendum-B-Updates
+
