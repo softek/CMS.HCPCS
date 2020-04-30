@@ -43,9 +43,17 @@
                                              (ss/cell-seq row))))
                            (drop-while
                               (fn drop-header? [cells]
-                                  (some? (first cells))))
-                           (filter #(>= (count %) 9)))
+                                  ;(println (first cells) :drop? (some? (first cells)))
+                                  (or (string/blank? (str (first cells))))))
+                           (filter #(>= (count %) 3)))
+        required-headers (into #{} (map str (keys rekey-2020)))
         [header & value-rows] relevant-rows]
+    (when-not (every? (into #{} header) required-headers)
+      (binding [*out* *err*]
+        (println "Missing some required fields.")
+        (println "Required: " (string/join "," (keys rekey-2020)))
+        (println "Actual:   " header)
+        (println "Missing:  " (remove (into #{} header) (seq required-headers)))))
     (->> value-rows
          (map (fn [cells]
                  (-> (into {} (map vector header cells))
@@ -71,17 +79,17 @@
 (defn print-SQL
   [records]
   (let [varchar-lengths
-        {:HCPCSCode (apply max (map (comp count :HCPCSCode) records))
-         :ShortDescriptor (apply max (map (comp count :ShortDescriptor) records))
-         :StatusIndicator (apply max (map (comp count :StatusIndicator) records))}
+        {:HCPCSCode (apply max (map (comp count str :HCPCSCode) records))
+         :ShortDescriptor (apply max (map (comp count str :ShortDescriptor) records))
+         :StatusIndicator (apply max (map (comp count str :StatusIndicator) records))}
         any-nils?
         {:HCPCSCode (some (comp nil? :HCPCSCode) records)
          :ShortDescriptor (some (comp nil? :ShortDescriptor) records)
          :StatusIndicator (some (comp nil? :StatusIndicator) records)}]
     (println "DECLARE @ScheduleB TABLE  (")
-    (println "  HCPCSCode varchar(" (get varchar-lengths :HCPCSCode) ") "(if (any-nils? :HCPCSCode) "" "NOT")" NULL PRIMARY KEY,")
-    (println "  ShortDescriptor varchar(" (get varchar-lengths :ShortDescriptor) ") "(if (any-nils? :ShortDescriptor) "" "NOT")" NULL,")
-    (println "  StatusIndicator varchar(" (get varchar-lengths :StatusIndicator) ") "(if (any-nils? :StatusIndicator) "" "NOT")" NULL,")
+    (println "  HCPCSCode varchar(" (get varchar-lengths :HCPCSCode) ") "(if (any-nils? :HCPCSCode) "" "NOT") " NULL PRIMARY KEY,")
+    (println "  ShortDescriptor varchar(" (get varchar-lengths :ShortDescriptor) ") "(if (any-nils? :ShortDescriptor) "" "NOT") " NULL,")
+    (println "  StatusIndicator varchar(" (get varchar-lengths :StatusIndicator) ") "(if (any-nils? :StatusIndicator) "" "NOT") " NULL,")
     (println "  PaymentRate REAL NULL,")
     (println "  Changed bit NOT NULL);")
     (doseq [record records]
