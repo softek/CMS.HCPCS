@@ -1,10 +1,13 @@
 (ns com.softekpanther.cms.hcpcs
   (:require [clojure.string :as string]
+            [clojure.java.io :as io]
+            [clojure.data.csv :as csv]
             [clojure.data.json :as json]
             [clojure.set :as set]
             [clojure.pprint :refer [pprint]]
             [dk.ative.docjure.spreadsheet :as ss])
-  (:import [org.apache.poi.ss.util CellReference]
+  (:import [java.io File]
+           [org.apache.poi.ss.util CellReference]
            [org.apache.poi.ss.usermodel Sheet Row])
   (:gen-class))
 
@@ -65,7 +68,7 @@
                      map->ScheduleBEntry)))))))
 
 (defn print-CSV
-  [records]
+  [{records :PaymentSchedule, status-indicators :PaymentStatusIndicators}]
   (println (string/join "," (map name (keys (map->ScheduleBEntry {})))))
   (doseq [row records]
     (println (string/join "," (map escape-csv (vals row))))))
@@ -81,7 +84,22 @@
         (nil? x)        "NULL"))
 
 (defn print-SQL
-  [records]
+  [{records :PaymentSchedule, status-indicators :PaymentStatusIndicators}]
+  (let [max-length (fn max-length [value-selector] (apply max (map (comp count str value-selector) status-indicators)))
+        any-nils?  (fn any-nils?  [value-selector] (some (comp nil? value-selector) status-indicators))]
+    (println "DECLARE @PaymentStatusIndicators TABLE  (")
+    (println "  StatusIndicator varchar(" (max-length :StatusIndicator) ") "(if (any-nils? :StatusIndicator) "" "NOT") " NULL PRIMARY KEY")
+    (println " ,Paid            varchar(" (max-length :Paid)            ") "(if (any-nils? :Paid)            "" "NOT") " NULL")
+    (println " ,Description     varchar(" (max-length :Description)     ") "(if (any-nils? :Description)     "" "NOT") " NULL)")
+    (doseq [schedule-identifier status-indicators]
+      (println
+        (str
+          "INSERT @PaymentStatusIndicators VALUES ("
+              (sql-literal (:StatusIndicator schedule-identifier))
+          "," (sql-literal (:Paid            schedule-identifier))
+          "," (sql-literal (:Description     schedule-identifier))
+          ");")))
+    (println))
   (let [max-length (fn max-length [value-selector] (apply max (map (comp count str value-selector) records)))
         any-nils?  (fn any-nils?  [value-selector] (some (comp nil? value-selector) records))]
     (println "DECLARE @ScheduleB TABLE  (")
@@ -124,6 +142,38 @@
    "CSV"        print-CSV
    "SQL"        print-SQL})
 
+(defn read-json
+  [rdr]
+  (json/read
+    rdr
+    :key-fn (comp keyword string/trim)
+    :value-fn (fn [k v] (string/trim v))))
+
+(defn csv-data->maps
+  [csv-data]
+  (map zipmap
+    (->> (first csv-data) ;; First row is the header
+         (map #(keyword (string/trim %))) ;; Convert to keyword
+         repeat)
+    (map #(map string/trim %)
+         (rest csv-data))))
+
+(defn read-csv
+  [rdr]
+  (csv-data->maps (csv/read-csv rdr)))
+
+(def readers ; (fn empty-reader [^java.io.Reader rdr] [])
+  {"JSON"    read-json
+   "CSV"     read-csv})
+
+(defn file-extension
+  "Gets the file extension – all chracters after the last `.` in the file name, or nil."
+  [f-or-s]
+  (->> f-or-s
+       io/as-file
+       (.getName)
+       (re-find #"(?<=\.)[^.]+$")))
+
 (defn- split-source-arg
   "Splits \"source=path\" into [source path] like
    (split-source-arg \"2020.04=my 2020 scheduleb.xlsx\") => [\"2020.04\" \"my 2020 scheduleb.xlsx\"]
@@ -133,6 +183,16 @@
         source   (first parts)
         xlsx-path (last parts)]
     [source xlsx-path]))
+
+(defn load-status-indicators
+  [status-indicator-csv-or-json]
+  (let [^File f (and status-indicator-csv-or-json (io/as-file status-indicator-csv-or-json))
+        ^File f (and f (.exists f) f)]
+    (if-not f
+      (throw (ex-info (str "File not found: " status-indicator-csv-or-json) {}))
+      (let [reader-fn (get readers (string/upper-case (file-extension f)))]
+        (with-open [reader (io/reader status-indicator-csv-or-json)]
+          (doall (reader-fn reader)))))))
 
 (defn load-records
   [source=xlsx-path]
@@ -147,18 +207,21 @@
   []
   (println "HCPCS Schedule B Extractor")
   (println)
-  (println "Arguments: <format> <source>=<file.xlsx> [... SourceN=fileN.xlsx]")
-  (println "or:        <format>          <file.xlsx> [...         fileN.xlsx]")
-  (println "Format: one of CSV, JSON, or SQL.")
+  (println "Arguments: <format> status-indicators.csv  <source>=<file.xlsx> [... SourceN=fileN.xlsx]")
+  (println "or:        <format> status-indicators.json <source>=<file.xlsx> [... SourceN=fileN.xlsx]")
+  (println "or:        <format>                        <file.xlsx> [...         fileN.xlsx]")
+  (println "Format: one of CSV, JSON, or SQL to control the form of the output.")
+  (println "Status Indicators file: file with fields named StatusIndicator,Paid,Description")
   (println "Source: an optional alias representing a useful name for the file.  If not supplied, the filename is used as the source.")
   (println "File:   path to an Excel .xlsx Schedule B workbook from")
   (println "https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/HospitalOutpatientPPS/Addendum-A-and-Addendum-B-Updates"))
 
 (defn -main
-  [& [format & source=xlsx-paths]]
+  [& [format status-indicator-csv-or-json & source=xlsx-paths]]
  (if (empty? source=xlsx-paths)
   (usage)
   (let [format (string/upper-case (or (and (string/blank? format) "JSON") format))
+        status-indicators (load-status-indicators status-indicator-csv-or-json)
         printer (or (get printers format)
                     (do (println "Unsupported format:" format) prn))
         records (->> (map load-records source=xlsx-paths)
@@ -166,7 +229,9 @@
                      (apply merge {})
                      vals
                      (sort-by #(.-HCPCSCode %)))]
-    (printer records)
+    (printer
+      {:PaymentStatusIndicators   status-indicators
+        :PaymentSchedule           records})
     (println)
 
     ; Write count to stderr

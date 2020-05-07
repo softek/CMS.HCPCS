@@ -1,3 +1,34 @@
+DECLARE @PaymentStatusIndicators TABLE  (
+  StatusIndicator varchar( 2 )  NOT  NULL PRIMARY KEY
+ ,Paid            varchar( 7 )  NOT  NULL
+ ,Description     varchar( 93 )  NOT  NULL)
+INSERT @PaymentStatusIndicators VALUES ('A','Always','Services Paid under Fee Schedule or Payment System other than OPPS');
+INSERT @PaymentStatusIndicators VALUES ('F','Always','Corneal');
+INSERT @PaymentStatusIndicators VALUES ('G','Always','Pass-Through Drugs and Biologicals');
+INSERT @PaymentStatusIndicators VALUES ('H','Always','Pass-Through Device Categories');
+INSERT @PaymentStatusIndicators VALUES ('J1','Always','Hospital Part B services paid through a comprehensive APC');
+INSERT @PaymentStatusIndicators VALUES ('J2','Always','Hospital Part B Services That May Be Paid Through a Comprehensive APC');
+INSERT @PaymentStatusIndicators VALUES ('K','Always','Nonpass-Through Drugs and Nonimplantable Biologicals');
+INSERT @PaymentStatusIndicators VALUES ('L','Always','Influenza Vaccine; Pneumococcal Pneumonia Vaccine');
+INSERT @PaymentStatusIndicators VALUES ('P','Always','Partial Hospitalization');
+INSERT @PaymentStatusIndicators VALUES ('Q1','Always','STVX-Packaged Codes');
+INSERT @PaymentStatusIndicators VALUES ('Q2','Always','T-Packaged Codes');
+INSERT @PaymentStatusIndicators VALUES ('Q3','Always','Codes That May Be Paid Through a Composite APC');
+INSERT @PaymentStatusIndicators VALUES ('Q4','Always','Conditionally packaged laboratory tests');
+INSERT @PaymentStatusIndicators VALUES ('R','Always','Blood and Blood Products');
+INSERT @PaymentStatusIndicators VALUES ('S','Always','Significant Procedure');
+INSERT @PaymentStatusIndicators VALUES ('T','Always','Significant Procedure');
+INSERT @PaymentStatusIndicators VALUES ('U','Always','Brachytherapy Sources');
+INSERT @PaymentStatusIndicators VALUES ('V','Always','Clinic or Emergency Department Visit');
+INSERT @PaymentStatusIndicators VALUES ('X','Always','Ancillary Services');
+INSERT @PaymentStatusIndicators VALUES ('Y','Always','Non-Implantable Durable Medical Equipment');
+INSERT @PaymentStatusIndicators VALUES ('N','Never','Items and Services Packaged into APC Rates');
+INSERT @PaymentStatusIndicators VALUES ('C','Never','Inpatient Procedures');
+INSERT @PaymentStatusIndicators VALUES ('E1','Never','Non-Covered Service');
+INSERT @PaymentStatusIndicators VALUES ('M','Never','Items and Services Not Billable to the Fiscal Intermediary/MAC');
+INSERT @PaymentStatusIndicators VALUES ('B','Unknown','Codes Not Recognized by OPPS when submitted on Outpatient Hospital Part B Bill Type (12x/13x)');
+INSERT @PaymentStatusIndicators VALUES ('E2','Unknown','Items and Services for which pricing information and claims data are not available');
+
 DECLARE @ScheduleB TABLE  (
   HCPCSCode       varchar( 7 )  NOT  NULL PRIMARY KEY
  ,ShortDescriptor varchar( 29 )  NOT  NULL
