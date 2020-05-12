@@ -1,27 +1,32 @@
 StatusIndicator,Paid,Description
-A,  Always,    Services Paid under Fee Schedule or Payment System other than OPPS
-F,  Always,    Corneal, CRNA and Hepatitis B
+A,  Sometimes, Services Paid under Fee Schedule or Payment System other than OPPS
+B,  Sometimes, Codes Not Recognized by OPPS when submitted on Outpatient Hospital Part B Bill Type (12x/13x)
+C,  Sometimes, Inpatient Procedures, not paid under OPPS
+D,  Never,     Discontinued code.  Not paid under OPPS or any other Medicare payment system.
+E1, Never,     Non-Covered Service, not paid under OPPS
+E2, Unknown,   Items and Services for which pricing information and claims data are not available
+F,  Sometimes, Corneal, CRNA and Hepatitis B
 G,  Always,    Pass-Through Drugs and Biologicals
 H,  Always,    Pass-Through Device Categories
 J1, Always,    Hospital Part B services paid through a comprehensive APC
 J2, Always,    Hospital Part B Services That May Be Paid Through a Comprehensive APC
 K,  Always,    Nonpass-Through Drugs and Nonimplantable Biologicals, Including Therapeutic Radiopharmaceuticals
-L,  Always,    Influenza Vaccine; Pneumococcal Pneumonia Vaccine
+K1, Always,    Nonpass-Through Drugs and Nonimplantable Biologicals, Including Therapeutic Radiopharmaceuticals
+K2, Always,    Therapeutic Radiopharmaceuticals
+K3, Always,    Brachytherapy Sources
+K4, Always,    Blood and Blood products
+L,  Sometimes, Influenza Vaccine; Pneumococcal Pneumonia Vaccine
+M,  Never,     Items and services not billable to the fiscal intermediary/MAC
+N,  Never,     Items and Services Packaged into APC Rates
 P,  Always,    Partial Hospitalization
-Q1, Always,    STVX-Packaged Codes
-Q2, Always,    T-Packaged Codes
-Q3, Always,    Codes That May Be Paid Through a Composite APC
-Q4, Always,    Conditionally packaged laboratory tests
+Q1, Sometimes, STVX-Packaged Codes
+Q2, Sometimes, T-Packaged Codes
+Q3, Sometimes, Codes That May Be Paid Through a Composite APC
+Q4, Sometimes, Conditionally packaged laboratory tests
 R,  Always,    Blood and Blood Products
 S,  Always,    Significant Procedure, Not Discounted When Multiple
 T,  Always,    Significant Procedure, Multiple Reduction Applies
 U,  Always,    Brachytherapy Sources
 V,  Always,    Clinic or Emergency Department Visit
 X,  Always,    Ancillary Services
-Y,  Always,    Non-Implantable Durable Medical Equipment
-N,  Never,     Items and Services Packaged into APC Rates
-C,  Never,     Inpatient Procedures, not paid under OPPS
-E1, Never,     Non-Covered Service, not paid under OPPS
-M,  Never,     Items and Services Not Billable to the Fiscal Intermediary/MAC
-B,  Unknown,   Codes Not Recognized by OPPS when submitted on Outpatient Hospital Part B Bill Type (12x/13x)
-E2, Unknown,   Items and Services for which pricing information and claims data are not available
+Y,  Sometimes, Non-Implantable Durable Medical Equipment
