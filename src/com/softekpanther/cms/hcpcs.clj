@@ -106,7 +106,7 @@
     (println "  HCPCSCode       varchar(" (max-length :HCPCSCode)       ") "(if (any-nils? :HCPCSCode)       "" "NOT") " NULL PRIMARY KEY")
     (println " ,ShortDescriptor varchar(" (max-length :ShortDescriptor) ") "(if (any-nils? :ShortDescriptor) "" "NOT") " NULL")
     (println " ,StatusIndicator varchar(" (max-length :StatusIndicator) ") "(if (any-nils? :StatusIndicator) "" "NOT") " NULL")
-    (println " ,PaymentRate     REAL NULL,")
+    (println " ,PaymentRate     REAL NULL")
     (println " ,Source          varchar(" (max-length :Source)          ") "(if (any-nils? :Source)          "" "NOT") " NULL)")
     (doseq [record records]
       (println
