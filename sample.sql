@@ -1,20 +1,20 @@
 DECLARE @PaymentStatusIndicators TABLE  (
   StatusIndicator varchar( 2 )  NOT  NULL PRIMARY KEY
  ,Paid            varchar( 9 )  NOT  NULL
- ,Description     varchar( 93 )  NOT  NULL)
+ ,Description     varchar( 95 )  NOT  NULL)
 INSERT @PaymentStatusIndicators VALUES ('A','Sometimes','Services Paid under Fee Schedule or Payment System other than OPPS');
 INSERT @PaymentStatusIndicators VALUES ('B','Sometimes','Codes Not Recognized by OPPS when submitted on Outpatient Hospital Part B Bill Type (12x/13x)');
-INSERT @PaymentStatusIndicators VALUES ('C','Sometimes','Inpatient Procedures');
+INSERT @PaymentStatusIndicators VALUES ('C','Sometimes','Inpatient Procedures, not paid under OPPS');
 INSERT @PaymentStatusIndicators VALUES ('D','Never','Discontinued code.  Not paid under OPPS or any other Medicare payment system.');
-INSERT @PaymentStatusIndicators VALUES ('E1','Never','Non-Covered Service');
+INSERT @PaymentStatusIndicators VALUES ('E1','Never','Non-Covered Service, not paid under OPPS');
 INSERT @PaymentStatusIndicators VALUES ('E2','Unknown','Items and Services for which pricing information and claims data are not available');
-INSERT @PaymentStatusIndicators VALUES ('F','Sometimes','Corneal');
+INSERT @PaymentStatusIndicators VALUES ('F','Sometimes','Corneal, CRNA and Hepatitis B');
 INSERT @PaymentStatusIndicators VALUES ('G','Always','Pass-Through Drugs and Biologicals');
 INSERT @PaymentStatusIndicators VALUES ('H','Always','Pass-Through Device Categories');
 INSERT @PaymentStatusIndicators VALUES ('J1','Always','Hospital Part B services paid through a comprehensive APC');
 INSERT @PaymentStatusIndicators VALUES ('J2','Always','Hospital Part B Services That May Be Paid Through a Comprehensive APC');
-INSERT @PaymentStatusIndicators VALUES ('K','Always','Nonpass-Through Drugs and Nonimplantable Biologicals');
-INSERT @PaymentStatusIndicators VALUES ('K1','Always','Nonpass-Through Drugs and Nonimplantable Biologicals');
+INSERT @PaymentStatusIndicators VALUES ('K','Always','Nonpass-Through Drugs and Nonimplantable Biologicals including Therapeutic Radiopharmaceuticals');
+INSERT @PaymentStatusIndicators VALUES ('K1','Always','Nonpass-Through Drugs and Nonimplantable Biologicals including Therapeutic Radiopharmaceuticals');
 INSERT @PaymentStatusIndicators VALUES ('K2','Always','Therapeutic Radiopharmaceuticals');
 INSERT @PaymentStatusIndicators VALUES ('K3','Always','Brachytherapy Sources');
 INSERT @PaymentStatusIndicators VALUES ('K4','Always','Blood and Blood products');
@@ -27,8 +27,8 @@ INSERT @PaymentStatusIndicators VALUES ('Q2','Sometimes','T-Packaged Codes');
 INSERT @PaymentStatusIndicators VALUES ('Q3','Sometimes','Codes That May Be Paid Through a Composite APC');
 INSERT @PaymentStatusIndicators VALUES ('Q4','Sometimes','Conditionally packaged laboratory tests');
 INSERT @PaymentStatusIndicators VALUES ('R','Always','Blood and Blood Products');
-INSERT @PaymentStatusIndicators VALUES ('S','Always','Significant Procedure');
-INSERT @PaymentStatusIndicators VALUES ('T','Always','Significant Procedure');
+INSERT @PaymentStatusIndicators VALUES ('S','Always','Significant Procedure - not Discounted When Multiple');
+INSERT @PaymentStatusIndicators VALUES ('T','Always','Significant Procedure - multiple Reduction Applies');
 INSERT @PaymentStatusIndicators VALUES ('U','Always','Brachytherapy Sources');
 INSERT @PaymentStatusIndicators VALUES ('V','Always','Clinic or Emergency Department Visit');
 INSERT @PaymentStatusIndicators VALUES ('X','Always','Ancillary Services');
@@ -38,7 +38,7 @@ DECLARE @ScheduleB TABLE  (
   HCPCSCode       varchar( 7 )  NOT  NULL PRIMARY KEY
  ,ShortDescriptor varchar( 29 )  NOT  NULL
  ,StatusIndicator varchar( 2 )  NOT  NULL
- ,PaymentRate     REAL NULL,
+ ,PaymentRate     REAL NULL
  ,Source          varchar( 7 )  NOT  NULL)
 INSERT @ScheduleB VALUES ('0001F','Heart failure composite','E1',NULL,'2020-04');
 INSERT @ScheduleB VALUES ('0001U','Rbc dna hea 35 ag 11 bld grp','A',NULL,'2020-04');

@@ -1,17 +1,17 @@
 StatusIndicator,Paid,Description
 A,  Sometimes, Services Paid under Fee Schedule or Payment System other than OPPS
 B,  Sometimes, Codes Not Recognized by OPPS when submitted on Outpatient Hospital Part B Bill Type (12x/13x)
-C,  Sometimes, Inpatient Procedures, not paid under OPPS
+C,  Sometimes,"Inpatient Procedures, not paid under OPPS"
 D,  Never,     Discontinued code.  Not paid under OPPS or any other Medicare payment system.
-E1, Never,     Non-Covered Service, not paid under OPPS
+E1, Never,"Non-Covered Service, not paid under OPPS"
 E2, Unknown,   Items and Services for which pricing information and claims data are not available
-F,  Sometimes, Corneal, CRNA and Hepatitis B
+F,  Sometimes,"Corneal, CRNA and Hepatitis B"
 G,  Always,    Pass-Through Drugs and Biologicals
 H,  Always,    Pass-Through Device Categories
 J1, Always,    Hospital Part B services paid through a comprehensive APC
 J2, Always,    Hospital Part B Services That May Be Paid Through a Comprehensive APC
-K,  Always,    Nonpass-Through Drugs and Nonimplantable Biologicals, Including Therapeutic Radiopharmaceuticals
-K1, Always,    Nonpass-Through Drugs and Nonimplantable Biologicals, Including Therapeutic Radiopharmaceuticals
+K,  Always,    Nonpass-Through Drugs and Nonimplantable Biologicals including Therapeutic Radiopharmaceuticals
+K1, Always,    Nonpass-Through Drugs and Nonimplantable Biologicals including Therapeutic Radiopharmaceuticals
 K2, Always,    Therapeutic Radiopharmaceuticals
 K3, Always,    Brachytherapy Sources
 K4, Always,    Blood and Blood products
@@ -24,8 +24,8 @@ Q2, Sometimes, T-Packaged Codes
 Q3, Sometimes, Codes That May Be Paid Through a Composite APC
 Q4, Sometimes, Conditionally packaged laboratory tests
 R,  Always,    Blood and Blood Products
-S,  Always,    Significant Procedure, Not Discounted When Multiple
-T,  Always,    Significant Procedure, Multiple Reduction Applies
+S,  Always,    Significant Procedure - not Discounted When Multiple
+T,  Always,    Significant Procedure - multiple Reduction Applies
 U,  Always,    Brachytherapy Sources
 V,  Always,    Clinic or Emergency Department Visit
 X,  Always,    Ancillary Services
