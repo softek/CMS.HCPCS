@@ -2,6 +2,10 @@
 
 ## How to create a new package, schedule it for Panther upgrade-based deployment, and how to deploy it manually.
 
+### Source data
+
+Source data may be found by downloading the latest "Schedule B" from https://www.cms.gov/Medicare/Medicare-Fee-for-Service-Payment/HospitalOutpatientPPS/Addendum-A-and-Addendum-B-Updates
+
 ### Create new package
 * Download and unzip scheduleB data
 * Edit [samples.cmd](./samples.cmd) and add the most recent data file to the end of the command, like "source=filename".
