@@ -2,6 +2,10 @@
 
 A Clojure library designed to read the HCPCS codes from the CMS.gov Schedule B Excel workbooks and convert
 
+## How to create a package for Panther
+
+There is a whole page dedicated to this (don't worry, it's pretty easy if you have git and Leiningen installed, if not, you may want to contact one of the developers for help).  How to [create a new package, schedule it for Panther upgrade-based deployment](./Panther.md#create-new-package), and how to [deploy it manually](./Panther.md#deploy-a-package-wo-software-upgrade).
+
 ## Usage
 
 ```
