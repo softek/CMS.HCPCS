@@ -26,6 +26,14 @@
    ^Boolean  Changed?
    ^String   Source])
 
+(defn- valid-ScheduleBEntry-or-print-warning
+  [^ScheduleBEntry record]
+  (if (and (.-HCPCSCode       record)
+           (.-StatusIndicator record))
+    record
+    (binding [*out* *err*]
+      (println "; WARNING: incomplete record" record))))
+
 (defn- rekey
   [row]
   (-> (set/rename-keys row rekey-2020)
@@ -228,7 +236,8 @@
                      (map (fn [records] (zipmap (map #(.-HCPCSCode %) records) records)))
                      (apply merge {})
                      vals
-                     (sort-by #(.-HCPCSCode %)))]
+                     (sort-by #(.-HCPCSCode %))
+                     (keep valid-ScheduleBEntry-or-print-warning))]
     (printer
       {:PaymentStatusIndicators   status-indicators
         :PaymentSchedule           records})
