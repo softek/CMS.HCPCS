@@ -9,8 +9,11 @@ Source data may be found by downloading the latest "Schedule B" from https://www
 ### Create new package
 * Download and unzip scheduleB data
 * Edit [samples.cmd](./samples.cmd) and add the most recent data file to the end of the command, like "source=filename".
-* Run samples.cmd.  Verify the output looks correct and commit/push the results.
-* Make a copy of the file and give it a case-sensitive name PaymentSchedule.2020-04.json that alphanumerically and unambiguously sorts so that the file matching PaymentSchedule.*.json is the file the web server reads.
+* Run samples.cmd.  Verify the output looks correct and commit/push the results.  You may find these commands useful to compare the CSV file differences.
+    * Before committing: `git diff --word-diff-regex="[^,]+" -- *csv`
+    * QA latest commit: `git show head --word-diff-regex="[^,]+" -- *csv`
+    * ![Example comparison](./git_word-diff-regex.png)
+* Make a copy of the file and give it a case-sensitive name PaymentSchedule.2020-04.json that alphanumerically and unambiguously sorts so that the file matching `PaymentSchedule.*.json` is the file the web server reads.
 
 ### Schedule Install/Upgrade
 * Optionally add the file to Panther.Server.Installer in the [bulk data Seed\hcpcs section](https://github.com/softek/panther/tree/ui/main/src/deployment/Panther.Server.Installer/Seed/hcpcs) and delete the old file that should no longer be deployed. heat.exe should automatically reflect the added and remove files in a generated .wxs file.
