@@ -5,7 +5,8 @@
             [clojure.data.json :as json]
             [clojure.set :as set]
             [clojure.pprint :refer [pprint]]
-            [dk.ative.docjure.spreadsheet :as ss])
+            [dk.ative.docjure.spreadsheet :as ss]
+            com.softekpanther.cms.docjure-patches)
   (:import [java.io File]
            [org.apache.poi.ss.util CellReference]
            [org.apache.poi.ss.usermodel Sheet Row])
