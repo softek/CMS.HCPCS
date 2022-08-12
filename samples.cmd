@@ -18,4 +18,7 @@ java -jar target\com.softekpanther.cms-0.1.1-SNAPSHOT-standalone.jar %1 status-i
 2020-05-04="2020_april_web_addendum_b.05042020.xlsx" ^
 2021-01="2021_January_Web_Addendum_B.12.29.20.xlsx" ^
 2021-06="April_2021_OPPS_Web_Addendum_B.03222021.xlsx" ^
-2021-10="2021_October_Web_Addendum_B.10262021.xlsx" > %2
+2021-10="2021_October_Web_Addendum_B.10262021.xlsx" ^
+2022-01="January_2022_Web_Addendum_B.01.10.22.xlsx" ^
+2022-04="April_2022_Web_Addendum_B.04052022.xlsx" ^
+2022-07="July_2022_Web_Addendum_B.062222.xlsx" > %2
