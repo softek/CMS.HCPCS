@@ -12014,11 +12014,11 @@ INSERT @ScheduleB VALUES ('A9601','Flortaucipir inj 1 millicuri','E2',NULL,'2022
 INSERT @ScheduleB VALUES ('A9602','Fluorodopa f-18 diag per mci','G',528.798,'2022-10');
 INSERT @ScheduleB VALUES ('A9604','Sm 153 lexidronam','K',17259.853,'2022-10');
 INSERT @ScheduleB VALUES ('A9606','Radium ra223 dichloride ther','K',151.579,'2022-10');
-INSERT @ScheduleB VALUES ('A9607','Lutetium lu 177 vipivotide','G',43775.0,'2022-10');
+INSERT @ScheduleB VALUES ('A9607','Lutetium lu 177 vipivotide','G',218.875,'2022-10');
 INSERT @ScheduleB VALUES ('A9698','Non-rad contrast materialnoc','N',NULL,'2022-10');
 INSERT @ScheduleB VALUES ('A9699','Radiopharm rx agent noc','N',NULL,'2022-10');
 INSERT @ScheduleB VALUES ('A9700','Echocardiography contrast','N',NULL,'2022-10');
-INSERT @ScheduleB VALUES ('A9800','Gallium locametz 1 millicuri','G',5936.0,'2022-10');
+INSERT @ScheduleB VALUES ('A9800','Gallium locametz 1 millicuri','G',848.0,'2022-10');
 INSERT @ScheduleB VALUES ('A9900','Supply/accessory/service','Y',NULL,'2022-10');
 INSERT @ScheduleB VALUES ('A9901','Delivery/set up/dispensing','A',NULL,'2022-10');
 INSERT @ScheduleB VALUES ('A9999','Dme supply or accessory, nos','Y',NULL,'2022-10');
@@ -17837,7 +17837,7 @@ INSERT @ScheduleB VALUES ('Q5120','Inj pegfilgrastim-bmez 0.5mg','G',135.548,'20
 INSERT @ScheduleB VALUES ('Q5121','Inj. avsola, 10 mg','G',36.419,'2022-10');
 INSERT @ScheduleB VALUES ('Q5122','Inj, nyvepria','G',171.378,'2022-10');
 INSERT @ScheduleB VALUES ('Q5123','Inj. riabni, 10 mg','G',48.6,'2022-10');
-INSERT @ScheduleB VALUES ('Q5124','Inj. byooviz, 0.1 mg','E2',NULL,'2022-10');
+INSERT @ScheduleB VALUES ('Q5124','Inj. byooviz, 0.1 mg','K',232.78,'2022-10');
 INSERT @ScheduleB VALUES ('Q5125','Inj, releuko 1 mcg','G',0.806,'2022-10');
 INSERT @ScheduleB VALUES ('Q9001','Chaplain assessment','B',NULL,'2022-10');
 INSERT @ScheduleB VALUES ('Q9002','Chaplain counsel individu','B',NULL,'2022-10');
