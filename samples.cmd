@@ -22,4 +22,5 @@ java -jar target\com.softekpanther.cms-0.1.1-SNAPSHOT-standalone.jar %1 status-i
 2022-01="January_2022_Web_Addendum_B.01.10.22.xlsx" ^
 2022-04="April_2022_Web_Addendum_B.04052022.xlsx" ^
 2022-07="July_2022_Web_Addendum_B.062222.xlsx" ^
-2022-10="October_2022_Web_Addendum_B.11142022.xlsx" > %2
+2022-10="October_2022_Web_Addendum_B.11142022.xlsx" ^
+2023-01="2023_January_Web_Addendum_B.12212022.xlsx" > %2
