@@ -13,11 +13,11 @@
   (:gen-class))
 
 (def rekey-2020
- {"HCPCS Code"             :HCPCSCode
-  "Short Descriptor"       :ShortDescriptor
-  "SI"                     :StatusIndicator
-  "Payment Rate"           :PaymentRate
-  "* Indicates a Change"   :Changed?})
+ {"HCPCS Code"                                       :HCPCSCode
+  "Short Descriptor"                                 :ShortDescriptor
+  "SI"                                               :StatusIndicator
+  "Payment Rate"                                     :PaymentRate
+  "* Indicates a Change from the Previous Quarter"   :Changed?})
 
 (defrecord ScheduleBEntry
   [^String   HCPCSCode
@@ -138,7 +138,7 @@
                        "National Unadjusted Copayment"
                        "Minimum Unadjusted Copayment"
                        "Note: Actual copayments would be lower due to the cap on copayments at the Inpatient Deductible of $1,408.00"
-                       "* Indicates a Change"])
+                       "* Indicates a Change from the Previous Quarter"])
   (def example-path "January 2020 Addendum B CORRECTION.02042020.xlsx")
   (def workbook (ss/load-workbook example-path))
   (def sheet (first (ss/sheet-seq workbook)))
