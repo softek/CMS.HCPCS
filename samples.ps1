@@ -20,3 +20,6 @@ Write-Host "Building uberjar"
 Convert-Addendum "CSV" "sample.csv"
 Convert-Addendum "JSON" "sample.json"
 Convert-Addendum "SQL" "sample.sql"
+
+# replace empty strings with nulls in JSON, see panther-17125 for more info.
+(Get-Content sample.json) -replace '"PaymentRate":\s*""', '"PaymentRate":null' | Set-Content sample.json
