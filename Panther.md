@@ -8,7 +8,7 @@ Source data may be found by downloading the latest "Schedule B" from https://www
 
 ### Create new package
 * Download and unzip scheduleB data
-* Run [samples.ps1](./samples.ps1).  Verify the output looks correct and commit/push the results.  You may find these commands useful to compare the CSV file differences.
+* Run [GenerateSamples.ps1](./GenerateSamples.ps1).  Verify the output looks correct and commit/push the results.  You may find these commands useful to compare the CSV file differences.
     * Before committing: `git diff --word-diff-regex="[^,]+" -- *csv`
     * QA latest commit: `git show head --word-diff-regex="[^,]+" -- *csv`
     * ![Example comparison](./git_word-diff-regex.png)
