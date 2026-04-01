@@ -22,3 +22,6 @@ Convert-Addendum "SQL" "sample.sql"
 # replace empty strings with nulls in JSON, see panther-17125 for more info.
 #(Get-Content sample.json) -replace '"PaymentRate":\s*""', '"PaymentRate":null' | Set-Content sample.json
 #The latest version of the addendum did not have nulls, so this is not required anymore. Keeping incase it comes back.
+
+$date = Get-Date -Format "yyyy-MM"
+Copy-Item .\sample.json  ".\PaymentSchedule.$date.json"
